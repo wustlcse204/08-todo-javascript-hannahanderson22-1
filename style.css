@@ -1,0 +1,66 @@
+/*ToDo Personal Stylesheet*/
+
+* {
+  background-color: #dae3e2;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+* button {
+  border-color: #5da790;
+  background-color: #9ec4ba;
+}
+
+.heading {
+  text-align: center;
+}
+
+.usertasksect {
+  text-align: center;
+}
+
+#addtaskbutton {
+  position: relative;
+  display: block;
+  margin: auto;
+  background-color: #9ec4ba;
+  font-size: 24px;
+  border: 2px;
+  border-color: black;
+  left: 2%;
+}
+
+#addtaskbutton:hover {
+  background-color: green;
+  border: 3px;
+}
+
+#newtask {
+  position: relative;
+  display: block;
+  margin: auto;
+  left: 2%;
+  background-color: white;
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+ul li {
+  position: relative;
+  font-size: 25px;
+  padding: 15px 10px 15px 35px;
+  background: #9ec4ba;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+ul li:nth-child(odd){
+  background: #97b839;
+}
+
+ul li:hover {
+  background: #fbe54d;
+}

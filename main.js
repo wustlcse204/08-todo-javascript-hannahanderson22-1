@@ -6,8 +6,6 @@ var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
   if((this.readyState == 4) && (this.status == 200)){
     var tasklist = JSON.parse(this.responseText);
-    console.log(tasklist);
-    console.log(tasklist.length);
 
     for(var tasknum=0; tasknum<tasklist.length; tasknum++){
       createTask(tasklist[tasknum]);
@@ -23,7 +21,7 @@ function createTask(input){
   var taskid = input.id;
   var tasktext = input.text;
   var task = document.createElement("li");
-  task.innerHTML = tasktext; //?
+  task.innerHTML = tasktext;
 
   var completetask = document.createElement("input");
   completetask.setAttribute("type", "checkbox");
@@ -37,7 +35,7 @@ function createTask(input){
   deletetask.style.top="15px";
   deletetask.style.left="30px";
 
-  if(input.completed){ //?
+  if(input.completed == true){
     task.style.fontStyle="italic";
     task.style.textDecoration = "line-through";
   }
@@ -49,15 +47,14 @@ function createTask(input){
   task.appendChild(completetask);
   task.appendChild(deletetask);
 
-  console.log(input.id);
-  completetask.addEventListener("click", function(event){markComplete(taskid)}); //?
-  deletetask.addEventListener("click", function(event){deleteItem(taskid)}); //?
+  completetask.addEventListener("click", function(event){markComplete(taskid)});
+  deletetask.addEventListener("click", function(event){deleteItem(taskid)});
 }
 
 document.getElementById("addtaskbutton").addEventListener("click", function(event){addTask()});
 
 function addTask(){
-  var inputsect = {text: document.getElementById("usertasksect").value};
+  var inputsect = {text: document.getElementById("newtask").value}
 
   var xhttpb = new XMLHttpRequest();
   xhttpb.onreadystatechange = function (){
@@ -71,21 +68,22 @@ function addTask(){
   };
 
   xhttpb.open("POST", "https://cse204.work/todos", true);
-  xhttpb.setRequestHeader("content-type", "application/json"); //?
+  xhttpb.setRequestHeader("content-type", "application/json");
   xhttpb.setRequestHeader("x-api-key", "d7cd5a-c3dbb2-67c015-083077-c82435");
   xhttpb.send(JSON.stringify(inputsect));
 
-  document.getElementById("usertasksect").value = "";
+  document.getElementById("newtask").value = "";
 }
 
 function markComplete(currentid){
   var taskcompletedid = currentid;
   var xhttpc = new XMLHttpRequest();
-  var stat = {completed: true}; //?
+  var stat = {completed: true}
 
   xhttpc.onreadystatechange = function(){
     if((this.readyState==4)&&(this.status==200)){
       console.log(document.getElementById(taskcompletedid));
+      document.getElementById(taskcompletedid).style.fontStyle="italic";
       document.getElementById(taskcompletedid).style.textDecoration="line-through";
     }
     else if(this.readyState==4){
@@ -97,4 +95,22 @@ function markComplete(currentid){
   xhttpc.setRequestHeader("content-type", "application/json");
   xhttpc.setRequestHeader("x-api-key", "d7cd5a-c3dbb2-67c015-083077-c82435");
   xhttpc.send(JSON.stringify(stat));
+}
+
+function deleteItem(currentid){
+  var taskdeletedid = currentid;
+  var xhttpd = new XMLHttpRequest();
+  xhttpd.onreadystatechange = function(){
+    if((this.readyState==4)&&(this.status==200)){
+      document.getElementById(taskdeletedid).remove();
+    }
+    else if(this.readyState==4){
+      console.log(this.responseText);
+    }
+  };
+
+  xhttpd.open("DELETE", "https://cse204.work/todos/"+taskdeletedid, true);
+  xhttpd.setRequestHeader("content-type","application/json");
+  xhttpd.setRequestHeader("x-api-key", "d7cd5a-c3dbb2-67c015-083077-c82435");
+  xhttpd.send();
 }
